@@ -63,31 +63,22 @@ SCDBOOT_RESOURCES=$(SCDBOOTSS:.s=.o)
 
 #BMPS=$(wildcard res/*.bmp)
 #VGMS=$(wildcard res/*.vgm)
-#RAWS=$(wildcard res/*.raw)
-#PCMS=$(wildcard res/*.pcm)
-#MVSS=$(wildcard res/*.mvs)
-#TFDS=$(wildcard res/*.tfd)
-#WAVS=$(wildcard res/*.wav)
+RAWS=$(wildcard res/*.raw)
+PCMS=$(wildcard res/*.pcm)
+WAVS=$(wildcard res/*.wav)
 RESS=$(wildcard res/*.res)
-#WAVPCMS=$(wildcard res/*.wavpcm)
 #BMPS+=$(wildcard *.bmp)
 #VGMS+=$(wildcard *.vgm)
-#RAWS+=$(wildcard *.raw)
-#PCMS+=$(wildcard *.pcm)
-#MVSS+=$(wildcard *.mvs)
-#TFDS+=$(wildcard *.tfd)
-#WAVS+=$(wildcard *.wav)
+RAWS+=$(wildcard *.raw)
+PCMS+=$(wildcard *.pcm)
+WAVS+=$(wildcard *.wav)
 RESS+=$(wildcard *.res)
-#WAVPCMS+=$(wildcard *.wavpcm)
 
 #RESOURCES+=$(BMPS:.bmp=.o)
 #RESOURCES+=$(VGMS:.vgm=.o)
-#RESOURCES+=$(RAWS:.raw=.o)
-#RESOURCES+=$(PCMS:.pcm=.o)
-#RESOURCES+=$(MVSS:.mvs=.o)
-#RESOURCES+=$(TFDS:.tfd=.o)
-#RESOURCES+=$(WAVS:.wav=.o)
-#RESOURCES+=$(WAVPCMS:.wavpcm=.o)
+RESOURCES+=$(RAWS:.raw=.o)
+RESOURCES+=$(PCMS:.pcm=.o)
+RESOURCES+=$(WAVS:.wav=.o)
 RESOURCES+=$(RESS:.res=.o)
 
 CS=$(wildcard src/*.c)
@@ -157,7 +148,7 @@ out.iso: out.elf_scd
 	$(PCMTORAW) $< $@
 
 %.raw: %.wav
-	$(WAVTORAW) $< $@ 16000
+	$(WAVTORAW) $< $@ 11025
 
 %.pcm: %.wavpcm
 	$(WAVTORAW) $< $@ 22050
@@ -184,7 +175,7 @@ out.iso: out.elf_scd
 	$(BINTOS) -align 256 $<
 
 %.s: %.raw
-	$(BINTOS) -align 256 -sizealign 256 $<
+	$(BINTOS) -align 256 $<
 
 %.s: %.rawpcm
 	$(BINTOS) -align 128 -sizealign 128 -nullfill 136 $<
