@@ -95,6 +95,7 @@ RESOURCES+=$(S80S:.s80=.o)
 OBJS = $(RESOURCES)
 
 all: out.bin 
+	/home/skarab/prog/megadrive/tools/Fusion/Fusion out.bin
 
 boot/sega.o: boot/rom_head.bin
 	$(AS) $(ASFLAGS) boot/sega.s -o $@
