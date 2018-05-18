@@ -35,7 +35,7 @@ Z80FLAGS = -vb2
 ASFLAGS = -m68000 --register-prefix-optional
 #LIBS =  -L$(GENDEV)/m68k-elf/lib -L$(GENDEV)/m68k-elf/lib/gcc/m68k-elf/4.8.2 -L$(GENDEV)/m68k-elf/m68k-elf/lib -lmd -lc -lgcc -lnosys -lm 
 LIBS =  -L$(GENDEV)/m68k-elf/lib -L$(GENDEV)/m68k-elf/lib/gcc/m68k-elf/* -L$(GENDEV)/m68k-elf/m68k-elf/lib -lmd -lnosys 
-LINKFLAGS = -T $(GENDEV)/ldscripts/sgdk.ld -nostdlib 
+LINKFLAGS = -T $(GENDEV)/ldscripts/sgdk.ld -Map=output.map -nostdlib 
 SCDLINKFLAGS = -T scd/mdcd.ld -nostdlib 
 ARCHIVES = $(GENDEV)/m68k-elf/lib/libmd.a 
 
@@ -63,22 +63,23 @@ SCDBOOT_RESOURCES=$(SCDBOOTSS:.s=.o)
 
 #BMPS=$(wildcard res/*.bmp)
 #VGMS=$(wildcard res/*.vgm)
-RAWS=$(wildcard res/*.raw)
-PCMS=$(wildcard res/*.pcm)
+#RAWS=$(wildcard res/*.raw)
+#PCMS=$(wildcard res/*.pcm)
+#MVSS=$(wildcard res/*.mvs)
+#TFDS=$(wildcard res/*.tfd)
 WAVS=$(wildcard res/*.wav)
 RESS=$(wildcard res/*.res)
-#BMPS+=$(wildcard *.bmp)
-#VGMS+=$(wildcard *.vgm)
-RAWS+=$(wildcard *.raw)
-PCMS+=$(wildcard *.pcm)
-WAVS+=$(wildcard *.wav)
+#WAVPCMS=$(wildcard res/*.wavpcm)
 RESS+=$(wildcard *.res)
 
 #RESOURCES+=$(BMPS:.bmp=.o)
 #RESOURCES+=$(VGMS:.vgm=.o)
-RESOURCES+=$(RAWS:.raw=.o)
-RESOURCES+=$(PCMS:.pcm=.o)
+#RESOURCES+=$(RAWS:.raw=.o)
+#RESOURCES+=$(PCMS:.pcm=.o)
+#RESOURCES+=$(MVSS:.mvs=.o)
+#RESOURCES+=$(TFDS:.tfd=.o)
 RESOURCES+=$(WAVS:.wav=.o)
+#RESOURCES+=$(WAVPCMS:.wavpcm=.o)
 RESOURCES+=$(RESS:.res=.o)
 
 CS=$(wildcard src/*.c)
@@ -86,6 +87,7 @@ SS=$(wildcard src/*.s)
 S80S=$(wildcard src/*.s80)
 CS+=$(wildcard *.c)
 CS+=$(wildcard sme/*.c)
+CS+=$(wildcard res/*.c)
 SS+=$(wildcard *.s)
 S80S+=$(wildcard *.s80)
 RESOURCES+=$(CS:.c=.o)
@@ -95,7 +97,7 @@ RESOURCES+=$(S80S:.s80=.o)
 OBJS = $(RESOURCES)
 
 all: out.bin 
-	/home/skarab/prog/megadrive/tools/Fusion/Fusion out.bin
+	gens out.bin
 
 boot/sega.o: boot/rom_head.bin
 	$(AS) $(ASFLAGS) boot/sega.s -o $@
@@ -125,10 +127,10 @@ out.iso: out.elf_scd
 	dd if=temp.bin of=$@ bs=8K conv=sync
 
 %.elf: $(OBJS) $(BOOT_RESOURCES)
-	$(CC) -o $@ $(LINKFLAGS) $(BOOT_RESOURCES) $(ARCHIVES) $(OBJS) $(LIBS)
+	$(LD) -o $@ $(LINKFLAGS) $(BOOT_RESOURCES) $(ARCHIVES) $(OBJS) $(LIBS)
 
 %.elf_scd: $(OBJS) $(SCDBOOT_RESOURCES)
-	$(CC) -o $@ $(SCDLINKFLAGS) $(SCDBOOT_RESOURCES) $(ARCHIVES) $(OBJS) $(LIBS)
+	$(LD) -o $@ $(SCDLINKFLAGS) $(SCDBOOT_RESOURCES) $(ARCHIVES) $(OBJS) $(LIBS)
 
 %.o80: %.s80
 	$(ASMZ80) $(Z80FLAGS) -o $@ $<
@@ -143,7 +145,7 @@ out.iso: out.elf_scd
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.s: %.bmp
-	bintos -bmp $<
+	$(BINTOS)  -bmp $<
 
 %.rawpcm: %.pcm
 	$(PCMTORAW) $< $@

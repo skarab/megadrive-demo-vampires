@@ -6,10 +6,13 @@
 #include "sme_sound.h"
 #include "sme_input.h"
 #include "sme_time.h"
-#include "sme_bitmap.h"
+#include "sme_screen.h"
 #include "sme_framebuffer.h"
+#include "sme_mesh.h"
+#include "sme_scene.h"
+#include "sme_raster.h"
 
-void sme_Initialize(int hard);
+void sme_Initialize();
 void sme_Finalize();
 void sme_Update();
 

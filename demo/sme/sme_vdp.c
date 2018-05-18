@@ -12,10 +12,11 @@ u16 smePLAN_HEIGHT;
 void smeVDP_Initialize()
 {
     //VDP_init();
+
     VDP_setHInterrupt(0);
     VDP_setHilightShadow(0);
     VDP_setScreenWidth256();
-    
+
     smeSCREEN_Width2 = screenWidth>>1;
     smeSCREEN_Height2 = screenHeight>>1;
     smeSCREEN_Width8 = screenWidth>>3;

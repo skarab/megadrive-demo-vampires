@@ -1,12 +1,7 @@
 #include "sme.h"
 
-void sme_Initialize(int hard)
+void sme_Initialize()
 {
-    if (hard==0)
-    {
-        // handle reset
-    }
-    
     smeVDP_Initialize();
     smeINPUTS_Initialize();
 }

@@ -3,8 +3,10 @@
 
 #include "genesis.h"
 
-extern u8* smeFRAMEBUFFER;
-extern u16 smeFRAMEBUFFER_Offsets[256];
+extern u16* smeFRAMEBUFFER;
+extern const u16 smeFRAMEBUFFER_Width;
+extern const u16 smeFRAMEBUFFER_Height;
+extern u16* smeFRAMEBUFFER_Offsets;
 
 void smeFRAMEBUFFER_Initialize();
 void smeFRAMEBUFFER_Finalize();
