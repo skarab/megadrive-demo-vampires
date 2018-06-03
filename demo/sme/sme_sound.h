@@ -3,6 +3,6 @@
 
 #include "genesis.h"
 
-u32 smeSOUND_GetTime(u32 pcm);
+u32 smeSOUND_GetTime(const u8* pcm);
 
 #endif

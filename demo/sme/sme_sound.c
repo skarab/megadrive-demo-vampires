@@ -1,7 +1,8 @@
 #include "sme_sound.h"
 
-u32 smeSOUND_GetTime(u32 pcm)
+u32 smeSOUND_GetTime(const u8* music)
 {
+	u32 pcm = (u32)music;
     Z80_requestBus(1);
     vu8 *pb = (u8*)(Z80_DRV_PARAMS+0x10);
     u8 a=pb[0];

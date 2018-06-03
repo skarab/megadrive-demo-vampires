@@ -1,2 +1,2 @@
 # megadrive-demo
-WIP
+Vampires demo made for the VIP 2018.
